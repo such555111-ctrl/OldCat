@@ -14,7 +14,7 @@ import telebot
 from telebot import types
 
 logging.basicConfig(level=logging.INFO)
-log = logging.getLogger("bro_shop")
+log = logging.getLogger("oldcat_shop")
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 if not BOT_TOKEN:
@@ -25,7 +25,7 @@ if not BOT_TOKEN:
 BASE_URL = (os.environ.get("WEBHOOK_URL") or os.environ.get("RENDER_EXTERNAL_URL") or "").rstrip("/")
 
 # Telegram-аккаунт менеджера (без @) — на него ведёт кнопка «Написать менеджеру».
-SHOP_CONTACT = (os.environ.get("SHOP_CONTACT") or "trushnyibro").lstrip("@").strip()
+SHOP_CONTACT = (os.environ.get("SHOP_CONTACT") or "Old_cat2").lstrip("@").strip()
 
 # Пароль для входа в админ-панель (/admin). Задаётся в переменных окружения.
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
@@ -432,14 +432,14 @@ def cmd_start(message: types.Message):
     if not BASE_URL:
         bot.send_message(
             message.chat.id,
-            "KOSHELEV: мини-апп ещё не сконфигурирован (не задан WEBHOOK_URL)."
+            "OldCat: мини-апп ещё не сконфигурирован (не задан WEBHOOK_URL)."
         )
         return
 
     keyboard = types.InlineKeyboardMarkup()
     keyboard.add(
         types.InlineKeyboardButton(
-            text="👑 Открыть KOSHELEV",
+            text="🐈‍⬛ Открыть OldCat",
             web_app=types.WebAppInfo(url=BASE_URL + "/")
         )
     )
@@ -463,11 +463,13 @@ def cmd_start(message: types.Message):
 
     bot.send_message(
         message.chat.id,
-        "👑 *KOSHELEV — вейп-шоп*\n\n"
-        "*Зашёл → выбрал → забрал.*\n"
-        "Низкие цены, только оригинал, гарантия на покупку. "
-        "Самовывоз и доставка по Москве день в день, без предоплаты.\n\n"
+        "🐈‍⬛ *OldCat — вейп-шоп*\n\n"
+        "Работаем по Владимиру.\n"
+        "Жидкости, одноразки, сигареты и техника. "
+        "Всё оригинальное и по хорошим ценам, возможен индивидуальный заказ.\n"
+        "Оплата: наличными или переводом.\n\n"
         "Нажмите кнопку ниже, чтобы открыть каталог, выбрать вкус и оформить заказ.\n\n"
+        "Отзывы: https://t.me/ggsi6\n\n"
         "🔞 _Продукция содержит никотин, который вызывает зависимость. Только для лиц старше 18 лет._",
         reply_markup=keyboard,
         parse_mode="Markdown",
@@ -609,7 +611,7 @@ def create_order():
             bot.send_message(
                 customer_chat_id,
                 "✅ Заказ оформлен!\n\n"
-                f"Номер заказа: KOSHELEV-{new_id}\n"
+                f"Номер заказа: OldCat-{new_id}\n"
                 f"{items_lines}\n\n"
                 f"{discount_line}"
                 f"Итого: {fmt_price(total)}\n\n"
@@ -623,7 +625,7 @@ def create_order():
     buyer_username_label = f"@{customer_username}" if customer_username else "Юзернейм не указан"
 
     admin_text = (
-        f"🛒 Новый заказ KOSHELEV-{new_id}\n\n"
+        f"🛒 Новый заказ OldCat-{new_id}\n\n"
         f"Клиент: {name}\n"
         f"Телефон: {phone}\n"
         f"Покупатель: {buyer_id_label} | {buyer_username_label}\n"
@@ -721,7 +723,7 @@ def customer_cancel_order(oid):
 
     for admin_id in ADMIN_CHAT_IDS:
         try:
-            bot.send_message(admin_id, f"❌ Клиент отменил заказ KOSHELEV-{oid}")
+            bot.send_message(admin_id, f"❌ Клиент отменил заказ OldCat-{oid}")
         except Exception as e:
             log.warning("Не удалось уведомить администратора %s: %s", admin_id, e)
 
@@ -1125,7 +1127,7 @@ def admin_customer_orders():
         method = o.get("delivery_method")
         result_orders.append({
             "id": o.get("id"),
-            "number": f"KOSHELEV-{o.get('id')}",
+            "number": f"OldCat-{o.get('id')}",
             "created_at": o.get("created_at"),
             "status": o.get("status"),
             "items": items,
@@ -1219,7 +1221,7 @@ def admin_message_customer(oid):
     try:
         bot.send_message(
             chat_id,
-            f"💬 Сообщение от KOSHELEV по заказу KOSHELEV-{oid}:\n\n{text}"
+            f"💬 Сообщение от OldCat по заказу OldCat-{oid}:\n\n{text}"
         )
     except Exception as e:
         abort(400, description=f"Не удалось отправить сообщение: {e}")
@@ -1262,7 +1264,7 @@ def admin_message_question(qid):
     try:
         bot.send_message(
             chat_id,
-            f"💬 Ответ от KOSHELEV по товару «{q.get('product_name','')}»:\n\n{text}"
+            f"💬 Ответ от OldCat по товару «{q.get('product_name','')}»:\n\n{text}"
         )
     except Exception as e:
         abort(400, description=f"Не удалось отправить ответ: {e}")
